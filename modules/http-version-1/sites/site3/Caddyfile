@@ -1,0 +1,7 @@
+:443 {
+    tls /etc/caddy/certs/self-signed.crt /etc/caddy/certs/self-signed.key
+    root * /usr/share/nginx/html
+    file_server
+
+    php_fastcgi php_http3:9000
+}

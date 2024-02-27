@@ -1,0 +1,70 @@
+version: '3'
+
+services:
+  nginx-tls1_0:
+    image: nginx
+    volumes:
+      - ./nginx-tls1_0.conf:/etc/nginx/nginx.conf
+      - ./site-tls1_0:/usr/share/nginx/html
+      - ./site-tls1_0/nginx-selfsigned.crt:/etc/nginx/nginx-selfsigned.crt
+      - ./site-tls1_0/nginx-selfsigned.key:/etc/nginx/nginx-selfsigned.key
+    ports:
+      - 8081:443
+    links:
+      - php10
+
+  php10:
+    image: php:fpm
+    volumes:
+      - ./site-tls1_0:/var/www/html
+
+  nginx-tls1_1:
+    image: nginx
+    volumes:
+      - ./nginx-tls1_1.conf:/etc/nginx/nginx.conf
+      - ./site-tls1_1:/usr/share/nginx/html
+      - ./site-tls1_1/nginx-selfsigned.crt:/etc/nginx/nginx-selfsigned.crt
+      - ./site-tls1_1/nginx-selfsigned.key:/etc/nginx/nginx-selfsigned.key
+    ports:
+      - 8082:443
+    links:
+      - php11
+
+  php11:
+    image: php:fpm
+    volumes:
+      - ./site-tls1_1:/var/www/html
+
+  nginx-tls1_2:
+    image: nginx
+    volumes:
+      - ./nginx-tls1_2.conf:/etc/nginx/nginx.conf
+      - ./site-tls1_2:/usr/share/nginx/html
+      - ./site-tls1_2/nginx-selfsigned.crt:/etc/nginx/nginx-selfsigned.crt
+      - ./site-tls1_2/nginx-selfsigned.key:/etc/nginx/nginx-selfsigned.key
+    ports:
+      - 8083:443
+    links:
+      - php12
+
+  php12:
+    image: php:fpm
+    volumes:
+      - ./site-tls1_2:/var/www/html
+
+  nginx-tls1_3:
+    image: nginx
+    volumes:
+      - ./nginx-tls1_3.conf:/etc/nginx/nginx.conf
+      - ./site-tls1_3:/usr/share/nginx/html
+      - ./site-tls1_3/nginx-selfsigned.crt:/etc/nginx/nginx-selfsigned.crt
+      - ./site-tls1_3/nginx-selfsigned.key:/etc/nginx/nginx-selfsigned.key
+    ports:
+      - 8084:443
+    links:
+      - php13
+
+  php13:
+    image: php:fpm
+    volumes:
+      - ./site-tls1_3:/var/www/html

@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  nginx-casual_pii:
+    image: nginx
+    volumes:
+      - ./casual_pii:/usr/share/nginx/html
+    ports:
+      - 8085:80
+
+  nginx-credit_card_pii:
+    image: nginx
+    volumes:
+      - ./credit_card_pii:/usr/share/nginx/html
+    ports:
+      - 8086:80
+
+  nginx-passwords_pii:
+    image: nginx
+    volumes:
+      - ./passwords_pii:/usr/share/nginx/html
+    ports:
+      - 8087:80
+
+  nginx-ssn_pii:
+    image: nginx
+    volumes:
+      - ./ssn_pii:/usr/share/nginx/html
+    ports:
+      - 8088:80
