@@ -32,8 +32,16 @@
   <input type="submit">
 </form>
 
+<h2>reflected xss in email field</h2>
 
-<h2>Hidden reflected xss</h2>
+<form method="post">
+  Email: <input type="text" name="email">
+  <input type="hidden" name="action" value="email_xss">
+  <input type="submit">
+</form>
+
+
+<h2 hidden>Hidden reflected xss</h2>
 
 <form hidden method="post">
   Name: <input type="text" name="name">
@@ -59,6 +67,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         case 'sanitized_xss':
           sanitized_xss();
           break;
+        case 'email_xss':
+          email_xss();
+          break;
         default:
             echo "something went wrong";
             break;
@@ -73,6 +84,17 @@ function length_xss(){
   }
   else{
     echo "name is too long";
+  }
+}
+
+function email_xss(){
+  // example payload: "><svg/onload=alert(1)>"@x.y
+  $email = $_POST['email'];
+  if(filter_var($email, FILTER_VALIDATE_EMAIL)){
+    echo "your email is " . $email;
+  }
+  else{
+    echo "invalid email";
   }
 }
 
