@@ -23,6 +23,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
+<h2>Hidden reflected xss</h2>
+
+<form hidden method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
+  Name: <input type="text" name="name">
+  <input type="submit">
+</form>
+
+<?php
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // collect value of input field
+    $name = $_POST['name'];
+    echo "Hello, " . $name;
+}
+?>
+
 </body>
 </html>
 
