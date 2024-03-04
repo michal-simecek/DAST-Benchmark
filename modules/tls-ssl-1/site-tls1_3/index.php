@@ -24,6 +24,14 @@
   <input type="submit">
 </form>
 
+<h2>sanitized reflected xss</h2>
+
+<form method="post">
+  Name: <input type="text" name="name">
+  <input type="hidden" name="action" value="sanitized_xss">
+  <input type="submit">
+</form>
+
 
 <h2>Hidden reflected xss</h2>
 
@@ -48,6 +56,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         case 'hidden_xss':
             casual_xss();
             break;
+        case 'sanitized_xss':
+          sanitized_xss();
+          break;
         default:
             echo "something went wrong";
             break;
@@ -68,6 +79,12 @@ function length_xss(){
 function casual_xss(){
 $name = $_POST['name'];
 echo "Hello, " . $name;
+}
+
+function sanitized_xss(){
+  // reflected in script tags for now, feel free to make it more creative :)
+$name = $_POST['name'];
+echo "<script>". htmlspecialchars($name, ENT_QUOTES, 'UTF-8') . "</script>";
 }
 ?>
 
