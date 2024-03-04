@@ -40,6 +40,14 @@
   <input type="submit">
 </form>
 
+<h2>reflected xss with blacklisted words</h2>
+
+<form method="post">
+  Name: <input type="text" name="name">
+  <input type="hidden" name="action" value="blacklisted_xss">
+  <input type="submit">
+</form>
+
 
 <h2 hidden>Hidden reflected xss</h2>
 
@@ -69,6 +77,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           break;
         case 'email_xss':
           email_xss();
+          break;
+        case 'blacklisted_xss':
+          blacklisted_xss();
           break;
         default:
             echo "something went wrong";
@@ -107,6 +118,23 @@ function sanitized_xss(){
   // reflected in script tags for now, feel free to make it more creative :)
 $name = $_POST['name'];
 echo "<script>". htmlspecialchars($name, ENT_QUOTES, 'UTF-8') . "</script>";
+}
+
+function blacklisted_xss(){
+  $name = $_POST['name'];
+  if(!blacklisted($name)){
+    echo "Hello, " . $name;
+  }else{
+    echo "forbidden words in string";
+  }
+}
+
+function blacklisted($string){
+  //easily bypassable by using capital cases
+  $blacklist = 'javascript|<script>|<svg>|onload|onerror|img|alert|ALERT';
+  if (preg_match ("/$blacklist/", $string))
+  {return true;}
+  else{return false;}
 }
 ?>
 
