@@ -95,7 +95,7 @@ def main():
         remove_router("web/index.html") # Delete router page
     except Exception:
         pass
-    input("Press Enter to confirm stopping and removing all running docker containers...") # Wait for user input
+   # input("Press Enter to confirm stopping and removing all running docker containers...") # Wait for user input
     stop_and_remove_containers() # Stop and remove the containers
     find_and_run_compose_files("./modules") # You can call the function with the path to the directory where your compose files are
     run_compose_file("./docker-compose.yml") # run webserver with router
