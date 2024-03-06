@@ -30,6 +30,17 @@
     </div>
   </form> 
 
+  <h2>Denial of service - parameter name reflected</h2>
+<form method="post">
+    <div class="container">
+      <label for="name"><b>check if username is available</b></label>
+      <input type="text" placeholder="Enter Username" name="name" required>
+      <input type="hidden" name="action" value="parameter_name">
+  
+      <button type="submit">check</button>
+    </div>
+  </form> 
+
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $action = $_POST['action'];
@@ -40,6 +51,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           break;
       case 'dos-encoded':
           dos_encoded();
+          break;
+      case 'parameter_name':
+          parameter_name_dos();
           break;
       default:
           echo "something went wrong";
@@ -66,8 +80,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       }
       echo "schrodinger's username";
     }
+
+    function parameter_name_dos(){
+      echo htmlspecialchars(key($_POST));
+    }
   ?>
-  
+
 </body>
 </html>
 
