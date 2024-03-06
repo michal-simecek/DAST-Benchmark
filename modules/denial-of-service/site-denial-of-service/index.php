@@ -29,7 +29,7 @@
       <button type="submit">check</button>
     </div>
   </form> 
-
+  <br><br><br>
   <h2>Denial of service - parameter name reflected</h2>
 <form method="post">
     <div class="container">

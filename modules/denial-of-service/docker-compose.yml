@@ -6,8 +6,6 @@ services:
     volumes:
       - ./nginx-dos.conf:/etc/nginx/nginx.conf
       - ./site-denial-of-service:/usr/share/nginx/html
-     # - ./nginx-selfsigned.crt:/etc/nginx/nginx-selfsigned.crt
-     # - ./nginx-selfsigned.key:/etc/nginx/nginx-selfsigned.key
     ports:
       - 8089:80
     links:
