@@ -1,0 +1,9 @@
+FROM alpine:3.19.1
+RUN bash -c 'echo -e ...'
+RUN docker-php-ext-install mysqli
+# CMD Instruction
+CMD ["echo", "Hello world"] # Exec Form
+CMD echo "Hello world"      # Shell Form
+# ENTRYPOINT Instruction
+ENTRYPOINT ["echo", "Hello world"] # Exec Form
+ENTRYPOINT echo "Hello world"      # Shell Form

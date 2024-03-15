@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  nginx-sqli:
+    image: nginx
+    volumes:
+      - ./nginx-sqli.conf:/etc/nginx/nginx.conf
+      - ./site-sql-injection:/usr/share/nginx/html
+    ports:
+      - 8092:80
+    links:
+      - php15
+    depends_on:
+    - db
+
+  php15:
+    image: php:fpm
+    volumes:
+      - ./site-sql-injection:/var/www/html
+      - ./entrypoint.sh:/usr/local/bin/entrypoint.sh
+    entrypoint: ["/usr/local/bin/entrypoint.sh"]
+    restart: unless-stopped
+
+  db:
+    image: mysql:latest
+    environment:
+      - MYSQL_DATABASE=php_docker
+      - MYSQL_USER=php_docker
+      - MYSQL_PASSWORD=password
+      - MYSQL_ALLOW_EMPTY_PASSWORD=1
+    volumes:
+      - "./db:/docker-entrypoint-initdb.d"
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - 8093:80
+    environment:
+    - PMA_HOST=db
+    - PMA_PORT=3306
