@@ -7,3 +7,5 @@ CMD echo "Hello world"      # Shell Form
 # ENTRYPOINT Instruction
 ENTRYPOINT ["echo", "Hello world"] # Exec Form
 ENTRYPOINT echo "Hello world"      # Shell Form
+
+# docker-php-ext-install mysqli
