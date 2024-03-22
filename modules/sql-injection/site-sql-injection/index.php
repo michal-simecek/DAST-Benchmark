@@ -8,8 +8,25 @@ $username = 'php_docker'; // Adjust the username as necessary
 $password = 'password'; // Adjust the password as necessary
 $database = 'php_docker'; // Adjust the database name as necessary
 
+$oracle_host="//localhost:1521/XE";
+$oracle_username="system";
+$oracle_password="oracle";
+
+
+require_once __DIR__ . '/vendor/autoload.php';
+
+// Replace 'username', 'password', and 'myMongoDB' with your actual MongoDB credentials and database name
+$connectionString = 'mongodb://mongoadmin:mongoadminpassword@localhost:27017/DASTDB';
+
+$client = new MongoDB\Client($connectionString);
+
+// Select the database and collection
+$database = $client->DASTDB; // Replace 'myMongoDB' with your database name
+$collection = $database->users; // Replace 'users' with your collection name
+
+
+
 // Create connection
-echo "test";
 $conn = new mysqli($host, $username, $password, $database);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -48,9 +65,9 @@ function error_sql($conn){
     if ($result && $result->num_rows > 0) {
         while($row = $result->fetch_assoc()) {
             foreach ($row as $column => $value) {
-                $message .= htmlspecialchars($column) . ": " . htmlspecialchars($value) . "<br>";
+                echo htmlspecialchars($column) . ": " . htmlspecialchars($value) . "<br>";
     }}}else {
-        $message = "0 results";
+        echo "0 results";
     }
 }
 
@@ -79,7 +96,7 @@ function time_sql($conn){
         $executionTime = $endTime - $startTime;
         echo "Execution time: " . round($executionTime, 4) . " seconds.";
     } else {
-        $message = "Error in query execution.";
+        echo "Error in query execution.";
     }
 }
 
@@ -110,7 +127,5 @@ $conn->close();
         <input type="hidden" name="action" value="time_sql">
         <input type="submit" value="Login">
     </form>
-
-    <p><?php echo $message; ?></p>
 </body>
 </html>

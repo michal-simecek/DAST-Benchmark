@@ -8,4 +8,11 @@ CMD echo "Hello world"      # Shell Form
 ENTRYPOINT ["echo", "Hello world"] # Exec Form
 ENTRYPOINT echo "Hello world"      # Shell Form
 
-# docker-php-ext-install mysqli
+FROM php:fpm
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends wget && \
+    wget -qO /usr/local/bin/composer https://getcomposer.org/composer.phar && \
+    chmod +x /usr/local/bin/composer
+
+RUN composer install
