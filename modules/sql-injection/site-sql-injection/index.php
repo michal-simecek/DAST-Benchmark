@@ -3,31 +3,45 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-$host = 'db'; // Adjust the hostname as necessary
-$username = 'php_docker'; // Adjust the username as necessary
-$password = 'password'; // Adjust the password as necessary
-$database = 'php_docker'; // Adjust the database name as necessary
+// MySQL database credentials
+$mysql_host = 'db'; // Adjust the hostname as necessary
+$mysql_username = 'php_docker'; // Adjust the username as necessary
+$mysql_password = 'password'; // Adjust the password as necessary
+$mysql_database = 'php_docker'; // Adjust the database name as necessary
 
-$oracle_host="//localhost:1521/XE";
-$oracle_username="system";
-$oracle_password="oracle";
+// MongoDB database credentials
+$mongo_host = 'localhost';
+$mongo_username = 'mongoadmin';
+$mongo_password = 'mongoadminpassword';
+$mongo_database = 'DASTDB'; // Adjust the database name as necessary
 
+// MySQL connection
+$mysqli = new mysqli($mysql_host, $mysql_username, $mysql_password, $mysql_database);
 
-require_once __DIR__ . '/vendor/autoload.php';
+if ($mysqli->connect_error) {
+    die("MySQL Connection failed: " . $mysqli->connect_error);
+}
 
-// Replace 'username', 'password', and 'myMongoDB' with your actual MongoDB credentials and database name
-$connectionString = 'mongodb://mongoadmin:mongoadminpassword@localhost:27017/DASTDB';
+// MongoDB connection
+//require_once __DIR__ . '/vendor/autoload.php';
 
-$client = new MongoDB\Client($connectionString);
+//$mongo_client = new MongoDB\Client("mongodb://$mongo_username:$mongo_password@$mongo_host");
 
-// Select the database and collection
-$database = $client->DASTDB; // Replace 'myMongoDB' with your database name
-$collection = $database->users; // Replace 'users' with your collection name
+//$mongo_db = $mongo_client->selectDatabase($mongo_database);
+//$mongo_collection = $mongo_db->users;
 
+//$users = $mongo_collection->find([]);
+
+// // Echo details of each user
+// foreach ($users as $user) {
+//     echo "Username: " . $user['username'] . "<br>";
+//     echo "Password: " . $user['password'] . "<br>";
+//     echo "ID: " . $user['_id'] . "<br><br>";
+// }
 
 
 // Create connection
-$conn = new mysqli($host, $username, $password, $database);
+$conn = new mysqli($mysql_host, $mysql_username, $mysql_password, $mysql_database);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $action = $_POST['action'];
