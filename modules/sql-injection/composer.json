@@ -1,0 +1,9 @@
+{
+    "name": "your-username/your-project-name",
+    "description": "Your project description",
+    "type": "project",
+    "require": {
+        "php": "8.3.4",
+        "mongodb/mongodb": "^1.11"
+    }
+}

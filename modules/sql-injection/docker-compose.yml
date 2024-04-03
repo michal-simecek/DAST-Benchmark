@@ -1,0 +1,49 @@
+version: '3'
+
+services:
+  nginx-sqli:
+    image: nginx
+    volumes:
+      - ./nginx-sqli.conf:/etc/nginx/nginx.conf
+      - ./site-sql-injection:/usr/share/nginx/html
+    ports:
+      - 8092:80
+    links:
+      - php15
+    depends_on:
+    - db
+    - mongodb
+
+  php15:
+    image: php:fpm
+    volumes:
+      - ./site-sql-injection:/var/www/html
+      - ./entrypoint.sh:/usr/local/bin/entrypoint.sh
+      - ./composer.json:/var/www/html/composer.json
+    entrypoint: ["/usr/local/bin/entrypoint.sh"]
+    restart: unless-stopped
+
+  mongodb:
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongoadmin
+      MONGO_INITDB_ROOT_PASSWORD: mongoadminpassword
+    ports:
+      - "27017:27017"
+
+  db:
+    image: mysql:latest
+    environment:
+      - MYSQL_DATABASE=php_docker
+      - MYSQL_USER=php_docker
+      - MYSQL_PASSWORD=password
+      - MYSQL_ALLOW_EMPTY_PASSWORD=1
+    volumes:
+      - "./db:/docker-entrypoint-initdb.d"
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - 8093:80
+    environment:
+    - PMA_HOST=db
+    - PMA_PORT=3306

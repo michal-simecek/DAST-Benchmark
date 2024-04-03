@@ -1,0 +1,18 @@
+FROM alpine:3.19.1
+RUN bash -c 'echo -e ...'
+RUN docker-php-ext-install mysqli
+# CMD Instruction
+CMD ["echo", "Hello world"] # Exec Form
+CMD echo "Hello world"      # Shell Form
+# ENTRYPOINT Instruction
+ENTRYPOINT ["echo", "Hello world"] # Exec Form
+ENTRYPOINT echo "Hello world"      # Shell Form
+
+FROM php:fpm
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends wget && \
+    wget -qO /usr/local/bin/composer https://getcomposer.org/composer.phar && \
+    chmod +x /usr/local/bin/composer
+
+RUN composer install
