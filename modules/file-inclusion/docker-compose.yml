@@ -15,5 +15,7 @@ services:
   php16:
     image: php:fpm
     volumes:
+      - ./entrypoint.sh:/usr/local/bin/entrypoint.sh
       - ./site-file-inclusion:/var/www/html
       - ./php.ini:/usr/local/etc/php/php.ini
+    entrypoint: ["/usr/local/bin/entrypoint.sh"]
