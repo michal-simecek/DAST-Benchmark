@@ -1,0 +1,391 @@
+Recent changes:
+---------------------------------------
+05-03-2024:
+* Updated kali to 2024.1
+* Updated BurpSuite to 2024_1_1_4
+* Updated Nessus to 10.7.1
+* Applied nonfree firmware transition - https://www.kali.org/blog/non-free-firmware-transition/
+* Created python-venv.sh for VENV operation; Don't use "pip" without VENV! - https://www.kali.org/blog/python-externally-managed/
+* Replaced "Postman" with "Insomnia" due to postman operating model change
+* Thanks to Michal Bambuch, local VM should no longer have keyboard lag
+* Added ffuf, nuclei, ultimate-nmap-parser, gowitness
+* Add "$HOME/go/bin/" in $PATH variable
+* Fixed resize-rootfs.sh path in ChangeLog
+* Uncreased Grub menu resolution to 1024x768
+* Removed "batcat" line numbering
+* Created draft of Kali First boot script
+* Fixed zsh $prompt_symbol
+* Set Max RAM Usage in burp to 90%
+* Added new Burp extensions
+* Reconfigure Param Miner,Server Side Prototype Pollution,CSRF
+* Minor changes in burp config to avoid loading some windows by default
+* Add Multiple Burp BChecks
+* Reinstalled Burp License
+
+09-01-2024:
+* Updated Kali to 2023.4
+* Updated Burp to 2023_11_1_3
+* Updated Nessus to 10.6.4
+* Applied permission fix for '/home/pentester/pentest' dir
+
+27-09-2023:
+* Updated Kali Packages
+* Updated Burp to 2023_10_1_1
+* Added cannelloni build for RPI3
+* Added large set of Frida Scripts
+* Updated Nessus to 10.6.1
+* Updated pentesting-payloads
+* Fixed unresponsive console issue
+
+04-08-2023:
+* Updated Kali Packages
+* Updated Burp to 2023_7_2
+
+16-06-2023:
+* Updated Kali Packages
+* Updated Burp to 2023_5_4
+* Updated Nessus to 10.5.2
+* Fixed Burp TLS issue
+
+10-05-2023:
+* Updated Kali Packages
+* Updated Burp to 2023_3_5
+* Changed KaliVM HW level to support ESXi >6.0
+* Increased Burp font size
+* Installed CAN testing tools: cannelloni, cangaroo, caringcaribou, uds_scanner, can-utils and python3-can
+
+21-03-2023:
+* Updated Kali to 2023.1
+* Updated Burp to 2023_2_3
+* Updated Nessus to 10.5.0
+* Reinstalled python-updog
+* Added Andrej's burp upstream proxy config (disabled by default)
+* Added pentesting-payloads repository
+* Changed KaliVM HW level for VMWare Workstation
+
+03-02-2023:
+* Updated Kali Packages
+* Updated Burp to 2022_12_7
+* Installed MQTTX_1.9.1, gnome-termiantor and python-is-python3
+* Changed kali-rolling repo to use Czech mirror
+* Added kali-bleeding-edge repository
+* Removed autochrome and few nonused Burp Extenstions
+* BurpBrowser now starts together with Burp
+* Restored xfce keyboard shortcuts to defaults + re-create our shortcuts
+* Rpcbind no longer starts on boot
+* Enabled Hardware 3d Acceleration 
+* Added button for HiDPI Mode
+
+06-01-2023:
+* Updated Kali Packages
+* Updated Burp to 2022_12_5
+* Updated Nessus to 10.4.1
+* Added Jan's Request Minimizer v1.1
+* Fixed Nessus Registration Issue
+* Installed peass ldapdomaindump bloodhound.py certipy-ad eyewitness
+* Removed Atom editor
+
+21-10-2022
+* Updated Kali Packages
+* Updated Burp to 2022_8_5
+* Installed golang patator gobuster
+* Added Sarang script for Subdomain Takeover
+* Resized rootfs 25->30 GB 
+* Updated BAppStore_mirror.py 
+* Reconfigured Nessus to handle scans over VMWare NAT
+* Disabled alerts about outdated processor microcode
+
+29-07-2022:
+* Updated Kali Packages
+* Updated Burp to 2022_7.1
+* Updated Nessus to 10.3.0
+* Configured terminal colors 
+* Fixed Midnight Commander start
+* Created create-dhcp-server.sh
+
+17-05-2022:
+* Updated Kali Packages to 2022.2
+* Updated Burp to 2022_3_7 
+* Installed python3-pip, python3-virtualenv, lapsdumper 
+* Configured Bloodhound 
+* Added Hausec customqueries to bloodhound 
+* Updated reinstall-nessus.sh to work with BuildVM.ps1 script
+* Removed orphaned files inside Burp install directory
+* Installed windows tools from kali-tools-windows-resources 
+
+14-04-2022:
+* Updated Kali Packages
+* Updated Burp to 2022.2.4
+* Updated Nessus to 10.1.2
+* Installed earlyoom, configured to kill most memory hungry process
+* Updated resize-rootfs.sh
+* Updated reinstall-nessus.sh, WebUI listens on localhost only
+* Added More Burp hotkeys
+* Created Burp AppStore mirroring script: BAppStore_mirror.py 
+* Updated install-drozer.sh script
+* Enabled CPU/Memory Hotplug
+
+25-02-2022:
+* Updated Kali Packages to 2022.1
+* Updated Burp to 2022_1_1
+* Updated Nessus to 10.1.1
+* Removed obsolete install-* scripts 
+* Installed nfs-client, rsh-client, snmpenum, cme, bloodhound
+* testssl.sh is now installed from repository 
+* Installed postman from PPA repository
+* Installed kali-tweaks, re-configured kali to support old ssh ciphers 
+
+06-01-2022:
+* Updated Kali Packages
+* Updated Burp to 2021_10_3
+* Updated Nessus to 10.0.2
+* Added sysmonitor widget to panel
+* Removed obsolete files in burp install directory 
+* Updated reinstall-nessus.sh script to compile plugins only once 
+
+08-11-2021:
+* Updated Kali Packages
+* Updated Burp to 2021_9_1
+* Updated Nessus to 10.0.0
+* Added WAFDetect to default Burp plugins 
+* Migrated postgresql 13->14
+* Shell & metasploit logging 
+* Autostart PostgresDB from metasploit 
+* Increased VM memory to 8G
+
+26-08-2021:
+* Updated Kali Packages
+* Updated Burp to 2021_8_2
+* Updated Nessus to 8.15.1
+
+02-07-2021:
+* Updated Kali Packages
+* Updated Burp to 2021_6_2
+* Updated Nessus to 8.15.0
+* Installed Visual Studio Code from kali packages 
+* Installed zenmap from kaboxer
+* Changed sudo config to keep user environment 
+* Changed xfce config to run root shell by default
+* HiRes DPI fixes for burp 
+* Added Wappalyzer extension to FF and Chrome 
+* Disabled Auto updates for burp 
+* Added more hosts to burp TLS passthrough
+* Fixed path for jython & jruby
+* Burp Inspector is closed by default 
+
+14-05-2021:
+* Updated Kali Packages
+* Updated Burp to 2021_5_1
+* Updated Nessus to 8.14.0
+* Updated script for installing Zenmap
+* Updated paths in ./Tools/*.sh scripts
+* Removed orphaned & uneccessary packages
+* Created new user pentester 
+* Changed default shell to zsh 
+* Fixed burp internal browser 
+
+22-03-2021:
+* Updated Kali Packages
+* Updated Burp to 2021_3_1
+* Docker no longer starts on boot
+* Created scripts for installing Zenmap & Python2
+* Updated backup & nessus script
+
+19-12-2020:
+* Updated Kali Packages
+* Updated Burp to 2020_12_1
+* Installed docker & docker-registry
+* Configured docker to user docker.tvmglobal.com mirror
+* Installed PwnFox and integrated with BurpSuite
+* Updated Nessus to 8.13.1
+* Fixed reinstall-nessus.sh script
+* Created scripts for setting up openvpn connectivity from client env to our VM
+
+01-11-2020:
+* Updated Nessus to 8.12.1
+* Updated Kali Packages
+* Updated Burp to 2020_9_2
+* Added an Option To Run Burp in Light/Dark Theme
+* Increased Fonts in Burp
+* Added Keyboard Shortcuts for Windows Management
+* Added Chromium Extension - Burp Suite Navigation Recorder
+* Configured Vim Defaults
+* Added install-gophish.sh script
+
+22-07-2020:
+* Updated Nessus to 8.11
+* Updated Kali Packages
+* Updated Burp to 2020_7
+* Reconfigured VM to support 4K displays
+* Tweaked bash history
+* Burp TLS passthrough
+
+17-06-2020:
+* Updated Nessus to 8.10.1
+* Updated Kali Packages
+* Updated Burp to 2020_5
+* Increased memory available to burp 2G->4G
+* Configured private collaborator server
+* Disabled sandbox for embedded burp browser
+* Added install script for Runtime Mobile Security (RMS)
+* Fix install-drozer.sh script
+* Added scan profiles to zenmap
+
+19-05-2020:
+* Created new backup script
+* updated nessus-plugins download location
+
+05-05-2020:
+* Updated Bash Prompt
+* Installed exiftool, updog, cve-search
+* Updated jython to 2.7.2
+* Updated Burp to 2020_4
+* Updated Nessus to 8.10.0
+* Updated Burp License (25 users)
+* Updated Kali Packages
+* Increased VM memory to 6G
+
+06-03-2020:
+* Updated Kali Packages
+* Updated Nessus to 8.9.1
+* Removed Burp 1.7.x (old stable)
+* Updated Burp to 2020_2
+* New Configuration File for Burp
+* Updated List of Default Burp Extensions
+* Add Accenture Templates for Burp Configuration Library
+* Changed Bash Prompt
+* Migrated Template to New Datastore
+
+29-01-2020:
+* Updated Kali Packages
+* Updated Nessus to 8.9.0
+* Disabled Xfce Compositor
+* Disabled Conky Transparency (temp fix)
+* Disabled 3D support in VM (temp fix)
+* Removed Resolution Change on Login
+* Removed Burp 1.x Start Button
+* Added iptables-redirect.sh Script
+* Added Burp Audit Configuration 
+
+03-01-2020:
+* Updated Kali Packages
+* Updated Nessus to 8.8.0
+* Updated BurpSuite to 2_1_07 stable
+* Disabled mouse support in vim
+* Fixed install-mobsf.sh script
+* Installed payloadsallthethings
+* Resized rootfs by 1G
+* Changed wallpaper
+
+01-10-2019:
+* Updated Kali Packages
+* Updated BurpSuite to 2_1_05 stable
+
+01-10-2019:
+* Updated Kali Packages
+* Updated Nessus to 8.7.1
+* Updated BurpSuite to 2_1_04 stable
+* Changed burp theme to dark
+* Updated backup.py script
+* Installed powershell
+
+02-08-2019:
+* Updated Kali Packages
+* Updated Nessus to 8.5.1
+* Updated BurpSuite to 2_1_02 stable
+* Burp 1.x become obsolete and it will be removed
+* Added authmatrix and Json beautifier to burp
+* Disabled private collaborator server
+* Installed seclists package
+* Added backup message
+
+09-05-2019:
+* Changed default menu to whisker menu
+* Changed xfce theme to Kali-X-Dark
+* Updated Kali Packages
+* Updated Nessus to 8.3.2
+
+18-04-2019:
+* Updated Kali Packages
+* Updated BurpSuite 2_0_20beta
+* Updated Nessus to 8.3.1
+* Added connectivity check for reinstall-nessus script
+* Added SimpleHTTPServerWithUpload.py
+* Installed filezilla, atom editor, visual studio code
+
+25-03-2019:
+* Fixed msf framework start problem
+
+20-03-2019:
+* Updated Kali Packages
+* Updated BurpSuite 2_0_18beta
+* Updated Nessus to 8.2.3
+* Updated reinstall-nessus script
+* Updated jython and jruby
+* Splited burp-settings-all.json file
+
+29-01-2019:
+* Updated Kali Packages
+* Installed WiFI drivers for Alfa AWUS036ACH
+* Installed adb & fastboot
+* Updated BurpSuite 2_0_14beta
+* Updated Nessus to 8.2.1
+* Updated autochrome to 71.0.3578.98 (stable)
+* Fixed install-* scripts
+* Added install script for Objection
+* Added autochrome quick launch icon
+* Removed autochrome from start-burpsuite-* scripts
+* Burp default project file is now obsolete, use burp-settings-all.json file
+
+30-11-2018:
+* Updated BurpSuite 2.x (Beta)
+* Updated Kali Packages
+* Burp use private collaborator server
+
+24-10-2018:
+* Updated BurpSuite 2.x (Beta)
+* Updated Kali Packages
+* Installed AV Solution (for audit requirements)
+
+28-08-2018:
+* Updated Kali/Burp (1.7.37)/Nessus(7.2)
+* Installed BurpSuite 2.x (Beta)
+* Updated backup.py script
+* Installed FTP client
+* Added create_ap script
+
+06-08-2018:
+* Updated Kali/Burp
+* Added reporter.py
+
+24-06-2018:
+* Updated Kali/Nessus/Burp
+* Disabled Firefox captive portal
+* Firefox: Added clear cookies addon
+* Burp: Updated settings - proxy/scanner/hotkeys
+* Burp: Added custom word list
+
+31-05-2018:
+* Reinstalled Burp from official package
+* Installed autochrome
+* Modified Burp extension list and configuration
+* Fixed mobsf install script
+* Upgraded Nessus to 7.1.0
+* Upgraded Kali packages
+* Added backup script
+
+24-04-2018:
+* Upgraded Nessus to 7.0.3
+* Upgraded Burp to 1.7.33
+* Upgraded Kali packages
+
+29-01-2018:
+* Upgraded Nessus to 7.0.1
+* Added shortcuts to panel
+
+20-02-2018:
+* Upgraded burp to 1.7.32
+* Upgraded kali packages
+* Upgraded Nessus to 7.0.2
+
+

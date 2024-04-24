@@ -12,7 +12,7 @@ services:
       - php15
     depends_on:
     - db
-    - mongodb
+    # - mongodb
 
   php15:
     image: php:fpm
@@ -23,13 +23,13 @@ services:
     entrypoint: ["/usr/local/bin/entrypoint.sh"]
     restart: unless-stopped
 
-  mongodb:
-    image: mongo:latest
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: mongoadmin
-      MONGO_INITDB_ROOT_PASSWORD: mongoadminpassword
-    ports:
-      - "27017:27017"
+  # mongodb:
+  #   image: mongo:latest
+  #   environment:
+  #     MONGO_INITDB_ROOT_USERNAME: mongoadmin
+  #     MONGO_INITDB_ROOT_PASSWORD: mongoadminpassword
+  #   ports:
+  #     - "27017:27017"
 
   db:
     image: mysql:latest

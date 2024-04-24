@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  nginx-authentication:
+    image: nginx
+    volumes:
+      - ./nginx-authentication.conf:/etc/nginx/nginx.conf
+      - ./site-authentication:/usr/share/nginx/html
+    ports:
+      - 8095:80
+    links:
+      - php18
+
+  php18:
+    image: php:fpm
+    volumes:
+      - ./entrypoint.sh:/usr/local/bin/entrypoint.sh
+      - ./site-authentication:/var/www/html
+    entrypoint: ["/usr/local/bin/entrypoint.sh"]

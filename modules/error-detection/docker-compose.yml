@@ -6,7 +6,6 @@ services:
     volumes:
       - ./nginx-error-detection.conf:/etc/nginx/nginx.conf
       - ./site-error-detection:/usr/share/nginx/html
-      # - ./site-error-detection/pages:/usr/share/nginx/html/pages
     ports:
       - 8094:80
     links:
@@ -17,4 +16,3 @@ services:
     volumes:
       - ./site-error-detection:/var/www/html
       - ./entrypoint.sh:/usr/local/bin/entrypoint.sh
-    # entrypoint: ["/usr/local/bin/entrypoint.sh"]
