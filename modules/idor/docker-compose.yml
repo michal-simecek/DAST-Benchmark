@@ -15,4 +15,3 @@ services:
     image: php:fpm
     volumes:
       - ./site-idor:/var/www/html
-      - ./entrypoint.sh:/usr/local/bin/entrypoint.sh
