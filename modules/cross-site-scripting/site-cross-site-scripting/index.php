@@ -6,9 +6,9 @@
 </head>
 
 <body>
-<h2>Casual reflected xss</h2>
+<!-- <h2>Casual reflected xss</h2> -->
 
-<form method="post">
+<!-- <form method="post">
   Name: <input type="text" name="name">
   <input type="hidden" name="action" value="casual_xss">
   <input type="submit">
@@ -28,7 +28,7 @@
   Name: <input type="text" name="name">
   <input type="hidden" name="action" value="sanitized_xss">
   <input type="submit">
-</form>
+</form> -->
 
 <h2>reflected xss in email field</h2>
 
@@ -38,9 +38,9 @@
   <input type="submit">
 </form>
 
-<h2>reflected xss with blacklisted words</h2>
+<!-- <h2>reflected xss with blacklisted words</h2> -->
 
-<form method="post">
+<!-- <form method="post">
   Name: <input type="text" name="name">
   <input type="hidden" name="action" value="blacklisted_xss">
   <input type="submit">
@@ -53,7 +53,7 @@
   Name: <input type="text" name="name">
   <input type="hidden" name="action" value="hidden_xss">
   <input type="submit">
-</form>
+</form> -->
 
 
 <?php
@@ -97,14 +97,23 @@ function length_xss(){
 }
 
 function email_xss(){
-  // example payload: "><svg/onload=alert(1)>"@x.y
+  // example payload: "<script>alert(1)</script>"@example.com
+  // , FILTER_VALIDATE_EMAIL
   $email = $_POST['email'];
-  if(filter_var($email, FILTER_VALIDATE_EMAIL)){
+  if(isEmail($email)){
     echo "your email is " . $email;
   }
   else{
     echo "invalid email";
   }
+}
+
+function isEmail($email) {
+  // Regular expression that checks for the basic structure of an email
+  $pattern = '/^[^@]+@[^@]+\.[^@]+$/';
+  
+  // Returns true if the email matches the pattern, false otherwise
+  return preg_match($pattern, $email);
 }
 
 function casual_xss(){
