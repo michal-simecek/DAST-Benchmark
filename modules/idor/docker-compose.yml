@@ -1,17 +1,18 @@
 version: '3'
 
 services:
-  nginx-denial-of-service:
+  nginx-idor:
     image: nginx
     volumes:
-      - ./nginx-dos.conf:/etc/nginx/nginx.conf
-      - ./site-denial-of-service:/usr/share/nginx/html
+      - ./nginx-idor.conf:/etc/nginx/nginx.conf
+      - ./site-idor:/usr/share/nginx/html
     ports:
-      - 8089:80
+      - 8096:80
     links:
-      - php14
+      - php19
 
-  php14:
+  php19:
     image: php:fpm
     volumes:
-      - ./site-denial-of-service:/var/www/html
+      - ./site-idor:/var/www/html
+      - ./entrypoint.sh:/usr/local/bin/entrypoint.sh
