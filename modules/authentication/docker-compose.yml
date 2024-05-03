@@ -6,7 +6,6 @@ services:
     volumes:
       - ./nginx-authentication.conf:/etc/nginx/nginx.conf
       - ./site-authentication:/usr/share/nginx/html
-      # - ./site-error-detection/pages:/usr/share/nginx/html/pages
     ports:
       - 8095:80
     links:
@@ -15,6 +14,6 @@ services:
   php18:
     image: php:fpm
     volumes:
-      - ./site-error-detection:/var/www/html
+      - ./site-authentication:/var/www/html
       - ./entrypoint.sh:/usr/local/bin/entrypoint.sh
     # entrypoint: ["/usr/local/bin/entrypoint.sh"]
