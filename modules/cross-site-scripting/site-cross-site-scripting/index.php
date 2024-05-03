@@ -6,13 +6,13 @@
 </head>
 
 <body>
-<!-- <h2>Casual reflected xss</h2>
+<h2>Casual reflected xss</h2>
 
 <form method="post">
   Name: <input type="text" name="name">
   <input type="hidden" name="action" value="casual_xss">
   <input type="submit">
-</form> -->
+</form>
 
 <h2>lenght limited reflected xss</h2>
 
