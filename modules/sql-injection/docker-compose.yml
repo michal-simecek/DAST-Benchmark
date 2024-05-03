@@ -12,24 +12,16 @@ services:
       - php15
     depends_on:
     - db
-    - mongodb
 
   php15:
     image: php:fpm
     volumes:
       - ./site-sql-injection:/var/www/html
       - ./entrypoint.sh:/usr/local/bin/entrypoint.sh
-      - ./composer.json:/var/www/html/composer.json
+      # - ./composer.json:/var/www/html/composer.json
     entrypoint: ["/usr/local/bin/entrypoint.sh"]
     restart: unless-stopped
 
-  mongodb:
-    image: mongo:latest
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: mongoadmin
-      MONGO_INITDB_ROOT_PASSWORD: mongoadminpassword
-    ports:
-      - "27017:27017"
 
   db:
     image: mysql:latest
