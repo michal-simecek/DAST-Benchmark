@@ -5,28 +5,28 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     
     // Define customer data based on the ID
     switch ($id) {
-        case 1:
+        case 1237:
             $full_name = "John Doe";
             $birthdate = "1990-01-01";
             $email = "john.doe@example.com";
             $invoice_ID = "INV19424857";
             $iban = "DE67 3364 7979 9856 2916 54";
             break;
-        case 2:
+        case 1236:
             $full_name = "Jane Smith";
             $birthdate = "1985-05-15";
             $email = "jane.smith@example.com";
             $invoice_ID = "INV134583609";
             $iban = "DE14 4041 3185 2492 4817 49";
             break;
-        case 3:
+        case 1235:
             $full_name = "Alice Johnson";
             $birthdate = "1992-08-24";
             $email = "alice.johnson@example.com";
             $invoice_ID = "INV19424857";
             $iban = "DE15 8146 5000 4724 6510 88";
             break;
-            case 4:
+            case 1234:
                 $full_name = "Benjamin Clark";
                 $birthdate = "1987-03-15";
                 $email = "benjamin.clark@example.com";
@@ -34,7 +34,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                 $iban = "DE21 1234 5678 9101 1121 31";
                 break;
             
-            case 5:
+            case 1233:
                 $full_name = "Samantha Ray";
                 $birthdate = "1990-07-22";
                 $email = "samantha.ray@example.com";
@@ -42,7 +42,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                 $iban = "DE34 5678 9101 1121 3141 52";
                 break;
             
-            case 6:
+            case 1232:
                 $full_name = "Oliver Miller";
                 $birthdate = "1982-12-30";
                 $email = "oliver.miller@example.com";
@@ -50,7 +50,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                 $iban = "DE56 2345 7891 0111 2131 64";
                 break;
             
-            case 7:
+            case 1231:
                 $full_name = "Emma Wilson";
                 $birthdate = "1995-05-18";
                 $email = "emma.wilson@example.com";
@@ -58,7 +58,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                 $iban = "DE78 3456 7891 0111 2131 76";
                 break;
             
-            case 8:
+            case 1230:
                 $full_name = "Noah Harris";
                 $birthdate = "1989-11-09";
                 $email = "noah.harris@example.com";
@@ -66,7 +66,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                 $iban = "DE90 4567 8910 1112 1318 87";
                 break;
             
-            case 9:
+            case 1229:
                 $full_name = "Mia Turner";
                 $birthdate = "1993-02-23";
                 $email = "mia.turner@example.com";
@@ -74,7 +74,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                 $iban = "DE09 1234 5678 9101 1213 99";
                 break;
             
-            case 10:
+            case 1228:
                 $full_name = "Lucas Brown";
                 $birthdate = "1996-08-14";
                 $email = "lucas.brown@example.com";
@@ -82,7 +82,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                 $iban = "DE12 3456 7891 0112 1314 10";
                 break;
             
-            case 11:
+            case 1227:
                 $full_name = "Chloe Davis";
                 $birthdate = "1991-10-25";
                 $email = "chloe.davis@example.com";
@@ -90,7 +90,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                 $iban = "DE23 4567 8910 1112 1314 21";
                 break;
             
-            case 12:
+            case 1226:
                 $full_name = "Ethan Lopez";
                 $birthdate = "1985-06-19";
                 $email = "ethan.lopez@example.com";
@@ -98,7 +98,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                 $iban = "DE45 6789 1011 1213 1415 32";
                 break;
             
-            case 13:
+            case 1225:
                 $full_name = "Sophia White";
                 $birthdate = "1988-09-05";
                 $email = "sophia.white@example.com";
