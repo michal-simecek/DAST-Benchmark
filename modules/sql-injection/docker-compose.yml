@@ -11,31 +11,21 @@ services:
     links:
       - php15
     depends_on:
-    - db
+      - db
 
   php15:
     image: php:fpm
+    command: bash -c "apt-get update && apt-get install -y default-libmysqlclient-dev mariadb-client && docker-php-ext-install mysqli && docker-php-entrypoint php-fpm"
     volumes:
       - ./site-sql-injection:/var/www/html
-      - ./entrypoint.sh:/usr/local/bin/entrypoint.sh
-      # - ./composer.json:/var/www/html/composer.json
-    entrypoint: ["/usr/local/bin/entrypoint.sh"]
-    restart: unless-stopped
-
 
   db:
     image: mysql:latest
     environment:
-      - MYSQL_DATABASE=php_docker
-      - MYSQL_USER=php_docker
+      - MYSQL_DATABASE=DASTDB
+      - MYSQL_USER=admin
       - MYSQL_PASSWORD=password
       - MYSQL_ALLOW_EMPTY_PASSWORD=1
     volumes:
-      - "./db:/docker-entrypoint-initdb.d"
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    ports:
-      - 8093:80
-    environment:
-    - PMA_HOST=db
-    - PMA_PORT=3306
+      - ./db:/docker-entrypoint-initdb.d
+      - ./db-data:/var/lib/mysql

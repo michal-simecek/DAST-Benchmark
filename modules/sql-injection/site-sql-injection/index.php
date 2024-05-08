@@ -4,16 +4,16 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
 // MySQL database credentials
-$mysql_host = 'db'; // Adjust the hostname as necessary
-$mysql_username = 'php_docker'; // Adjust the username as necessary
-$mysql_password = 'password'; // Adjust the password as necessary
-$mysql_database = 'php_docker'; // Adjust the database name as necessary
+$mysql_host = 'db';
+$mysql_username = 'admin';
+$mysql_password = 'password';
+$mysql_database = 'DASTDB';
 
 // MongoDB database credentials
 $mongo_host = 'localhost';
-$mongo_username = 'mongoadmin';
-$mongo_password = 'mongoadminpassword';
-$mongo_database = 'DASTDB'; // Adjust the database name as necessary
+$mongo_username = 'admin';
+$mongo_password = 'password';
+$mongo_database = 'DASTDB';
 
 // MySQL connection
 $mysqli = new mysqli($mysql_host, $mysql_username, $mysql_password, $mysql_database);
