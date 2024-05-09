@@ -12,10 +12,16 @@ services:
       - php15
     depends_on:
       - db
+      - mongodb
 
   php15:
     image: php:fpm
-    command: bash -c "apt-get update && apt-get install -y default-libmysqlclient-dev mariadb-client && docker-php-ext-install mysqli && docker-php-entrypoint php-fpm"
+    command: bash -c "apt-get update &&
+                      apt-get install -y default-libmysqlclient-dev mariadb-client &&
+                      (pecl install mongodb || true) &&
+                      echo 'extension=mongodb.so' >> /usr/local/etc/php/conf.d/mongo.ini &&
+                      docker-php-ext-install mysqli &&
+                      docker-php-entrypoint php-fpm"
     volumes:
       - ./site-sql-injection:/var/www/html
 
@@ -29,3 +35,12 @@ services:
     volumes:
       - ./db:/docker-entrypoint-initdb.d
       - ./db-data:/var/lib/mysql
+
+  mongodb:
+    image: mongo:latest
+    environment:
+      - MONGO_INITDB_DATABASE=DASTDB
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=adminpass
+    volumes:
+      - ./mongo-init:/docker-entrypoint-initdb.d

@@ -10,10 +10,11 @@ $mysql_password = 'password';
 $mysql_database = 'DASTDB';
 
 // MongoDB database credentials
-$mongo_host = 'localhost';
-$mongo_username = 'admin';
-$mongo_password = 'password';
-$mongo_database = 'DASTDB';
+$mongo_host = 'mongodb://admin:adminpass@mongodb:27017';
+$mongo_collection = 'DASTDB';
+
+// MongoDB connection
+$manager = new MongoDB\Driver\Manager($mongo_host);
 
 // MySQL connection
 $mysqli = new mysqli($mysql_host, $mysql_username, $mysql_password, $mysql_database);
@@ -21,24 +22,6 @@ $mysqli = new mysqli($mysql_host, $mysql_username, $mysql_password, $mysql_datab
 if ($mysqli->connect_error) {
     die("MySQL Connection failed: " . $mysqli->connect_error);
 }
-
-// MongoDB connection
-//require_once __DIR__ . '/vendor/autoload.php';
-
-//$mongo_client = new MongoDB\Client("mongodb://$mongo_username:$mongo_password@$mongo_host");
-
-//$mongo_db = $mongo_client->selectDatabase($mongo_database);
-//$mongo_collection = $mongo_db->users;
-
-//$users = $mongo_collection->find([]);
-
-// // Echo details of each user
-// foreach ($users as $user) {
-//     echo "Username: " . $user['username'] . "<br>";
-//     echo "Password: " . $user['password'] . "<br>";
-//     echo "ID: " . $user['_id'] . "<br><br>";
-// }
-
 
 // Create connection
 $conn = new mysqli($mysql_host, $mysql_username, $mysql_password, $mysql_database);
@@ -52,6 +35,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             break;
         case 'time_sql':
             time_sql($conn);
+            break;
+        case 'vulnerable_nosql':
+            vulnerable_nosql($manager, $mongo_collection);
             break;
         default:
             echo "something went wrong";
@@ -114,6 +100,31 @@ function time_sql($conn){
     }
 }
 
+function vulnerable_nosql($manager, $databaseName){
+    $userId = $_POST['userId'];
+
+    $filter = ['username' => ['$eq' => $userId]]; // Vulnerable to NoSQL injection
+    $options = [];
+    $query = new MongoDB\Driver\Query($filter, $options);
+    $cursor = $manager->executeQuery($databaseName . '.users', $query);
+
+    echo "<h3>Results:</h3>";
+    if ($cursor) {
+        foreach ($cursor as $document) {
+            $document = json_decode(json_encode($document), true);
+            foreach ($document as $key => $value) {
+                if (is_array($value)) {
+                    echo htmlspecialchars($key) . ": " . json_encode($value) . "<br>";
+                } else {
+                    echo htmlspecialchars($key) . ": " . htmlspecialchars($value) . "<br>";
+                }
+            }
+        }
+    } else {
+        echo "0 results";
+    }
+}
+
 $conn->close();
 ?>
 
@@ -140,6 +151,14 @@ $conn->close();
         <input type="password" id="password" name="password" value=""><br><br>
         <input type="hidden" name="action" value="time_sql">
         <input type="submit" value="Login">
+    </form>
+
+    <h2>NoSQL Injection Vulnerable Form</h2>
+    <form action="" method="post">
+        <label for="userId">User ID:</label><br>
+        <input type="text" id="userId" name="userId" value=""><br><br>
+        <input type="hidden" name="action" value="vulnerable_nosql">
+        <input type="submit" value="Submit">
     </form>
 </body>
 </html>
