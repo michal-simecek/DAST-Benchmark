@@ -1,0 +1,44 @@
+services:
+  nginx-index:
+    depends_on:
+    - php
+    image: nginx
+    ports:
+    - 80:80
+    volumes:
+    - ./index.html:/var/www/html/index.html
+    - ../modules/single-nginx/error-detection/error-detection/429.php:/var/www/html/error-detection-429.php
+    - ../modules/single-nginx/error-detection/error-detection/403.php:/var/www/html/error-detection-403.php
+    - ../modules/single-nginx/error-detection/error-detection/500.php:/var/www/html/error-detection-500.php
+    - ../modules/single-nginx/error-detection/error-detection/504.php:/var/www/html/error-detection-504.php
+    - ../modules/single-nginx/error-detection/error-detection/400.php:/var/www/html/error-detection-400.php
+    - ../modules/single-nginx/error-detection/error-detection/401.php:/var/www/html/error-detection-401.php
+    - ../modules/single-nginx/error-detection/error-detection/503.php:/var/www/html/error-detection-503.php
+    - ../modules/single-nginx/idor/_idor_support.php:/var/www/html/_idor_support.php
+    - ../modules/single-nginx/idor/idor.php:/var/www/html/idor.php
+    - ../modules/single-nginx/cross-site-scripting/reflected-xss.php:/var/www/html/reflected-xss.php
+    - ../modules/single-nginx/denial-of-service/denial-of-service.php:/var/www/html/denial-of-service.php
+    - ../modules/single-nginx/pii/common_pii.html:/var/www/html/common_pii.html
+    - ../modules/single-nginx/pii/passwords_pii.html:/var/www/html/passwords_pii.html
+    - ../modules/single-nginx/pii/ssn_pii.html:/var/www/html/ssn_pii.html
+    - ../modules/single-nginx/pii/credit_card_pii.html:/var/www/html/credit_card_pii.html
+    - ./default.conf:/etc/nginx/conf.d/default.conf
+  php:
+    image: php:fpm
+    volumes:
+    - ./index.html:/var/www/html/index.html
+    - ../modules/single-nginx/error-detection/error-detection/429.php:/var/www/html/error-detection-429.php
+    - ../modules/single-nginx/error-detection/error-detection/403.php:/var/www/html/error-detection-403.php
+    - ../modules/single-nginx/error-detection/error-detection/500.php:/var/www/html/error-detection-500.php
+    - ../modules/single-nginx/error-detection/error-detection/504.php:/var/www/html/error-detection-504.php
+    - ../modules/single-nginx/error-detection/error-detection/400.php:/var/www/html/error-detection-400.php
+    - ../modules/single-nginx/error-detection/error-detection/401.php:/var/www/html/error-detection-401.php
+    - ../modules/single-nginx/error-detection/error-detection/503.php:/var/www/html/error-detection-503.php
+    - ../modules/single-nginx/idor/_idor_support.php:/var/www/html/_idor_support.php
+    - ../modules/single-nginx/idor/idor.php:/var/www/html/idor.php
+    - ../modules/single-nginx/cross-site-scripting/reflected-xss.php:/var/www/html/reflected-xss.php
+    - ../modules/single-nginx/denial-of-service/denial-of-service.php:/var/www/html/denial-of-service.php
+    - ../modules/single-nginx/pii/common_pii.html:/var/www/html/common_pii.html
+    - ../modules/single-nginx/pii/passwords_pii.html:/var/www/html/passwords_pii.html
+    - ../modules/single-nginx/pii/ssn_pii.html:/var/www/html/ssn_pii.html
+    - ../modules/single-nginx/pii/credit_card_pii.html:/var/www/html/credit_card_pii.html

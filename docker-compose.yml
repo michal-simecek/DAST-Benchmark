@@ -1,8 +1,0 @@
-version: '3'
-services:
-  nginx-index:
-    image: nginx
-    volumes:
-      - ./web:/usr/share/nginx/html
-    ports:
-      - 0.0.0.0:80:80

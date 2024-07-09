@@ -1,5 +1,4 @@
 <?php
-// Check if an ID is provided and is numeric
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     $id = $_GET['id'];
     
@@ -121,8 +120,6 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 }
 
 
-
-// HTML output
 echo "<!DOCTYPE html>
 <html lang='en'>
 <head>
