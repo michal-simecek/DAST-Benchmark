@@ -2,9 +2,11 @@ import docker
 import subprocess
 import glob
 import os
+import re
 import netifaces as ni
 import argparse
 import yaml
+from docker.errors import NotFound
 
 try:
     from netifaces import AF_INET, ifaddresses
@@ -30,7 +32,7 @@ def update_docker_compose(docker_compose_path, path):
     with open(docker_compose_path, 'r') as file:
         docker_compose = yaml.safe_load(file)
 
-    docker_compose['services']['php']['volumes'] = new_volumes
+    docker_compose['services']['php-index']['volumes'] = new_volumes
     new_volumes = new_volumes[:] # creating new copy so previous list is not affected
     new_volumes += ["./default.conf:/etc/nginx/conf.d/default.conf"]
     docker_compose['services']['nginx-index']['volumes'] = new_volumes
@@ -39,6 +41,48 @@ def update_docker_compose(docker_compose_path, path):
         yaml.safe_dump(docker_compose, file)
 
     return endpoints
+
+
+def format_file_path(file_path):
+    return '-'.join(file_path.split('/')[2:-1])
+
+def replace_placeholders_in_file(file_path, start_port, port_placeholder="{port}", name_placeholder="{name}"):
+    with open(file_path, 'r') as file:
+        content = file.read()
+
+    # Replace {port} placeholders with incrementing port numbers
+    port_count = len(re.findall(re.escape(port_placeholder), content))
+    for i in range(port_count):
+        content = content.replace(port_placeholder, str(start_port + i), 1)
+    
+    # Replace {name} placeholders with formatted file path
+    formatted_path = format_file_path(file_path)
+    content = content.replace(name_placeholder, formatted_path)
+
+    with open(file_path, 'w') as file:
+        file.write(content)
+    
+    return start_port + port_count
+
+def replace_placeholders_in_directory(directory, start_port=8000, port_placeholder="{port}", name_placeholder="{name}"):
+    # Get all .yml and .conf files in the directory recursively
+    file_paths = glob.glob(os.path.join(directory, '**', '*.yml'), recursive=True) + \
+                 glob.glob(os.path.join(directory, '**', '*.conf'), recursive=True)
+    
+    # Replace placeholders in each file
+    for file_path in file_paths:
+        start_port = replace_placeholders_in_file(file_path, start_port, port_placeholder, name_placeholder)
+
+def prepare_docker_composes():
+    # Copy modules into temporary directoty
+    os.system('[ -d "./tmp" ] && rm -rf ./tmp')
+    os.system('cp -r ./modules ./tmp')
+    os.system('cp -r ./index ./tmp/index')
+
+    replace_placeholders_in_directory("./tmp")
+    index_endpoints = update_docker_compose("./tmp/index/docker-compose.yml","./tmp/single-nginx")
+    
+    return index_endpoints
 
 def run_compose_file(file_path):
     result = subprocess.run(
@@ -56,9 +100,9 @@ def find_and_run_compose_files(directory):
         run_compose_file(file_path)
 
 def start_containers():
-    find_and_run_compose_files("./modules")
-    index_endpoints = update_docker_compose("./nginx/docker-compose.yml","./modules/single-nginx")
-    run_compose_file("./nginx/docker-compose.yml") # run webserver with router page
+    index_endpoints = prepare_docker_composes()
+    run_compose_file("./tmp/index/docker-compose.yml") # run webserver with router page
+    find_and_run_compose_files("./tmp")
     generate_router(index_endpoints)
 
 def stop_containers():
@@ -67,6 +111,7 @@ def stop_containers():
         container.stop()
 
 def remove_containers():
+    os.system('[ -d "./tmp" ] && rm -rf ./tmp')
     containers = client.containers.list(all=True)
     for container in containers:
         container.remove()
@@ -100,7 +145,7 @@ def select_interface_return_IP(interface_dict):
 
 def generate_router(index_endpoint_list):
     containers = client.containers.list() # List running containers
-    html = "<html><body>"
+    html = "<html><body>\n"
     ip = select_interface_return_IP(get_interfaces())
     for container in containers: 
         port_data = container.attrs['NetworkSettings']['Ports'] # Get the port mappings
@@ -109,15 +154,15 @@ def generate_router(index_endpoint_list):
                 host_port = port_info[0]['HostPort']
                 if host_port == "80":
                     for index_endpoint in index_endpoint_list:
-                        html += f"<p><a href='http://{ip}/{index_endpoint}'>nginx-index/{index_endpoint}</a></p>"
+                        html += f"<p><a href='http://{ip}/{index_endpoint}'>nginx-index/{index_endpoint}</a></p>\n"
                     continue
                 if exposed_port == "80/tcp":
-                    html += f"<p><a href='http://{ip}:{host_port}'>{container.name}:{host_port}</a></p>" # Add a link to the HTML file for each exposed http port
+                    html += f"<p><a href='http://{ip}:{host_port}'>{container.name}:{host_port}</a></p>\n" # Add a link to the HTML file for each exposed http port
                 if exposed_port == "443/tcp":
-                    html += f"<p><a href='https://{ip}:{host_port}'>{container.name}:{host_port}</a></p>" # Add a link to the HTML file for each exposed https port
+                    html += f"<p><a href='https://{ip}:{host_port}'>{container.name}:{host_port}</a></p>\n" # Add a link to the HTML file for each exposed https port
     html += "</body></html>\n"
 
-    with open("nginx/index.html", "w") as file: # Write the HTML file
+    with open("index/index.html", "w") as file: # Write the HTML file
         file.write(html)
 
 def remove_router(filepath):
