@@ -1,0 +1,14 @@
+services:
+  nginx-{name}:
+    depends_on:
+    - php-{name}
+    image: nginx
+    ports:
+    - 80:80
+    volumes:
+    - ./index.html:/var/www/html/index.html
+    - ./default.conf:/etc/nginx/conf.d/default.conf
+  php-{name}:
+    image: php:fpm
+    volumes:
+    - ./index.html:/var/www/html/index.html
