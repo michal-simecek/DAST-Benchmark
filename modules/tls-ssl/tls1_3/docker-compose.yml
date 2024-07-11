@@ -1,0 +1,15 @@
+services:
+  nginx-{name}:
+    image: nginx
+    volumes:
+    - ./nginx.conf:/etc/nginx/nginx.conf
+    - ./index.php:/var/www/html/index.php
+    - ../nginx-selfsigned.crt:/etc/nginx/nginx-selfsigned.crt
+    - ../nginx-selfsigned.key:/etc/nginx/nginx-selfsigned.key
+    ports:
+    - {port}:443
+
+  php-{name}:
+    image: php:fpm
+    volumes:
+    - ./index.php:/var/www/html/index.php
