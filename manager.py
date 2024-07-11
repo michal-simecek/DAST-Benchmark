@@ -25,7 +25,7 @@ def update_docker_compose(docker_compose_path, path):
     ]
     for extension in ['php', 'html']:
         for file_path in glob.glob(f"{path}/**/*.{extension}", recursive=True):
-            new_volumes += ["." + file_path + ":/var/www/html/" + '-'.join(file_path.split('/')[4:])]
+            new_volumes += ["../." + file_path + ":/var/www/html/" + '-'.join(file_path.split('/')[4:])]
             if not '-'.join(file_path.split('/')[4:])[0] == '_':
                 endpoints += ['-'.join(file_path.split('/')[4:])]
 
@@ -77,7 +77,7 @@ def prepare_docker_composes():
     # Copy modules into temporary directoty
     os.system('[ -d "./tmp" ] && rm -rf ./tmp')
     os.system('cp -r ./modules ./tmp')
-    os.system('cp -r ./index ./tmp/index')
+    os.system('cp -r ./index ./tmp')
 
     replace_placeholders_in_directory("./tmp")
     index_endpoints = update_docker_compose("./tmp/index/docker-compose.yml","./tmp/single-nginx")
