@@ -67,7 +67,8 @@ def replace_placeholders_in_file(file_path, start_port, port_placeholder="{port}
 def replace_placeholders_in_directory(directory, start_port=8000, port_placeholder="{port}", name_placeholder="{name}"):
     # Get all .yml and .conf files in the directory recursively
     file_paths = glob.glob(os.path.join(directory, '**', '*.yml'), recursive=True) + \
-                 glob.glob(os.path.join(directory, '**', '*.conf'), recursive=True)
+                 glob.glob(os.path.join(directory, '**', '*.conf'), recursive=True) + \
+                 glob.glob(os.path.join(directory, '**', 'Caddyfile'), recursive=True)
     
     # Replace placeholders in each file
     for file_path in file_paths:

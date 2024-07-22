@@ -3,11 +3,11 @@
 <html>
 
 <head>
-        <title>TLS 1.1</title>
+        <title>HTTP 3</title>
 </head>
 
 <body>
-<h1>Welcome to TLS 1.1</h1>
+<h1>Welcome to HTTP 3</h1>
 <h2>Casual reflected xss</h2>
 
 <form method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
@@ -17,7 +17,6 @@
 
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // collect value of input field
     $name = $_POST['name'];
     echo "Hello, " . $name;
 }

@@ -5,20 +5,19 @@ function base64UrlDecode($data) {
 
 function decodeJWT($jwt, $secret) {
     if (empty($jwt)) {
-        return null; // Return null if no token is provided
+        return null;
     }
 
     // Split the JWT into its three parts
     $tokenParts = explode('.', $jwt);
     if (count($tokenParts) !== 3) {
-        return null; // Incorrect segments, invalid JWT
+        return null;
     }
 
     $header = base64UrlDecode($tokenParts[0]);
     $payload = base64UrlDecode($tokenParts[1]);
     $signatureProvided = $tokenParts[2];
 
-    // Generate a signature based on the header and payload using the secret
     $base64UrlHeader = base64UrlEncode($header);
     $base64UrlPayload = base64UrlEncode($payload);
     $signature = hash_hmac('sha256', $base64UrlHeader . "." . $base64UrlPayload, $secret, true);
@@ -26,7 +25,7 @@ function decodeJWT($jwt, $secret) {
 
     // Compare the provided signature with the generated one
     if (!hash_equals(base64UrlDecode($base64UrlSignature), base64UrlDecode($signatureProvided))) {
-        return null; // Signature verification failed
+        return null;
     }
 
     return json_decode($payload, true);
@@ -58,5 +57,4 @@ if ($decodedData) {
     exit('Unauthorized: JWT is invalid or the signature does not match.');
 }
 
-// Your secure PHP code goes here after the JWT is validated
 echo "This is a secure area after JWT validation.";

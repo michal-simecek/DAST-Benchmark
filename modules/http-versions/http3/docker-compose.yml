@@ -1,0 +1,17 @@
+services:
+  nginx-{name}:
+    image: caddy:latest
+    volumes:
+      - ./index.php:/var/www/html/index.php
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ../certs:/etc/caddy/certs
+    ports:
+      - {port}:443
+      - {port}:443/udp
+    depends_on:
+      - php-{name}
+
+  php-{name}:
+    image: php:fpm
+    volumes:
+      - ./index.php:/var/www/html/index.php

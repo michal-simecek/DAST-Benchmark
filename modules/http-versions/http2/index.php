@@ -3,11 +3,11 @@
 <html>
 
 <head>
-        <title>TLS 1.1</title>
+        <title>HTTP 2</title>
 </head>
 
 <body>
-<h1>Welcome to TLS 1.1</h1>
+<h1>Welcome to HTTP 2</h1>
 <h2>Casual reflected xss</h2>
 
 <form method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
