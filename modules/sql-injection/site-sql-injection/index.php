@@ -103,7 +103,7 @@ function time_sql($conn){
 function vulnerable_nosql($manager, $databaseName){
     $userId = $_POST['userId'];
 
-    $filter = ['username' => ['$eq' => $userId]]; // Vulnerable to NoSQL injection
+    $filter = ['username' => $userId]; // Vulnerable to NoSQL injection
     $options = [];
     $query = new MongoDB\Driver\Query($filter, $options);
     $cursor = $manager->executeQuery($databaseName . '.users', $query);

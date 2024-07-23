@@ -1,20 +1,18 @@
-version: '3'
-
 services:
-  nginx-sqli:
+  nginx-{name}:
     image: nginx
     volumes:
       - ./nginx-sqli.conf:/etc/nginx/nginx.conf
-      - ./site-sql-injection:/usr/share/nginx/html
+      - ./site-sql-injection:/var/www/html
     ports:
-      - 8092:80
+      - {port}:80
     links:
-      - php15
+      - php-{name}
     depends_on:
       - db
       - mongodb
 
-  php15:
+  php-{name}:
     image: php:fpm
     command: bash -c "apt-get update &&
                       apt-get install -y default-libmysqlclient-dev mariadb-client &&

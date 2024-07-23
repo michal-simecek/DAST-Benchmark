@@ -188,11 +188,11 @@ def main():
     elif args.stop:
         stop_containers()
     elif args.remove:
-        remove_router("web/index.html")
+        remove_router("index/index.html")
         remove_containers()
     elif args.restart:
         stop_containers()
-        remove_router("web/index.html")
+        remove_router("index/index.html")
         remove_containers()
         start_containers()
     else:
