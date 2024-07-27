@@ -7,7 +7,7 @@
 </head>
 
 <body>
-<h1>Welcome to HTTP 1</h1>
+<h1>HTTP 1</h1>
 <h2>Casual reflected xss</h2>
 
 <form method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
