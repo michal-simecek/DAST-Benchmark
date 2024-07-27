@@ -1,7 +1,0 @@
-:443 {
-    tls /etc/caddy/certs/self-signed.crt /etc/caddy/certs/self-signed.key
-    root * /var/www/html
-    file_server
-
-    php_fastcgi php-{name}:9000
-}
