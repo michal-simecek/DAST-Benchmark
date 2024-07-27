@@ -163,7 +163,7 @@ def generate_router(index_endpoint_list):
                     html += f"<p><a href='https://{ip}:{host_port}'>{container.name}:{host_port}</a></p>\n" # Add a link to the HTML file for each exposed https port
     html += "</body></html>\n"
 
-    with open("index/index.html", "w") as file: # Write the HTML file
+    with open("tmp/index/index.html", "w") as file: # Write the HTML file
         file.write(html)
 
 def remove_router(filepath):
@@ -188,11 +188,9 @@ def main():
     elif args.stop:
         stop_containers()
     elif args.remove:
-        remove_router("index/index.html")
         remove_containers()
     elif args.restart:
         stop_containers()
-        remove_router("index/index.html")
         remove_containers()
         start_containers()
     else:
