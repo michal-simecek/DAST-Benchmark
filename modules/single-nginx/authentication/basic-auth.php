@@ -1,7 +1,7 @@
 <?php
 function validateCredentials($username, $password) {
     $valid_username = 'admin';
-    $valid_password = 'admin';
+    $valid_password = 'dastbenchmark';
 
     return $username === $valid_username && $password === $valid_password;
 }

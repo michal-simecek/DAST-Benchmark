@@ -1,60 +1,118 @@
 <?php
-function base64UrlDecode($data) {
-    return base64_decode(strtr($data, '-_', '+/'));
+session_start();
+
+$secret_key = "dastbenchmarksecretkey";
+$valid_username = 'admin';
+$valid_password = 'dastbenchmark';
+
+function createJWT($header, $payload, $secret) {
+    $header_encoded = base64UrlEncode(json_encode($header));
+    $payload_encoded = base64UrlEncode(json_encode($payload));
+    $signature = hash_hmac('SHA256', "$header_encoded.$payload_encoded", $secret, true);
+    $signature_encoded = base64UrlEncode($signature);
+
+    return "$header_encoded.$payload_encoded.$signature_encoded";
 }
 
 function decodeJWT($jwt, $secret) {
-    if (empty($jwt)) {
-        return null;
+    $token_parts = explode('.', $jwt);
+    if(count($token_parts) !== 3) {
+        return false;
     }
 
-    // Split the JWT into its three parts
-    $tokenParts = explode('.', $jwt);
-    if (count($tokenParts) !== 3) {
-        return null;
+    list($header_encoded, $payload_encoded, $signature_encoded) = $token_parts;
+
+    $header = json_decode(base64UrlDecode($header_encoded), true);
+    $payload = json_decode(base64UrlDecode($payload_encoded), true);
+    $signature = base64UrlDecode($signature_encoded);
+
+    $valid_signature = hash_hmac('SHA256', "$header_encoded.$payload_encoded", $secret, true);
+
+    if($signature === $valid_signature) {
+        return $payload;
+    } else {
+        return false;
     }
-
-    $header = base64UrlDecode($tokenParts[0]);
-    $payload = base64UrlDecode($tokenParts[1]);
-    $signatureProvided = $tokenParts[2];
-
-    $base64UrlHeader = base64UrlEncode($header);
-    $base64UrlPayload = base64UrlEncode($payload);
-    $signature = hash_hmac('sha256', $base64UrlHeader . "." . $base64UrlPayload, $secret, true);
-    $base64UrlSignature = base64UrlEncode($signature);
-
-    // Compare the provided signature with the generated one
-    if (!hash_equals(base64UrlDecode($base64UrlSignature), base64UrlDecode($signatureProvided))) {
-        return null;
-    }
-
-    return json_decode($payload, true);
 }
 
 function base64UrlEncode($data) {
     return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
 }
 
-// Extract JWT from Authorization header
-$headers = getallheaders();
-$authHeader = isset($headers['Authorization']) ? $headers['Authorization'] : null;
-
-if (!$authHeader) {
-    http_response_code(401);
-    exit('Unauthorized: No JWT provided.');
+function base64UrlDecode($data) {
+    return base64_decode(strtr($data, '-_', '+/'));
 }
 
-$jwt = trim(str_replace("Bearer", "", $authHeader));
-$secretKey = "secret";
+// login
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
 
-$decodedData = decodeJWT($jwt, $secretKey);
+    if ($username === $valid_username && $password === $valid_password) {
+        $header = ['alg' => 'HS256', 'typ' => 'JWT'];
+        $payload = ['username' => $username, 'iat' => time(), 'exp' => time() + 3600];
 
-if ($decodedData) {
-    echo "JWT is valid. Payload:\n";
-    print_r($decodedData);
-} else {
-    http_response_code(401);
-    exit('Unauthorized: JWT is invalid or the signature does not match.');
+        $jwt = createJWT($header, $payload, $secret_key);
+        setcookie("jwt", $jwt, time() + 3600, "/"); // Set JWT as a cookie
+        header("Location: jwt.php");
+        exit();
+    } else {
+        $error = "Invalid username or password!";
+    }
 }
 
-echo "This is a secure area after JWT validation.";
+// logout
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['logout'])) {
+    setcookie("jwt", "", time() - 3600, "/"); // Expire the JWT cookie
+    header("Location: jwt.php");
+    exit();
+}
+
+// Check for JWT
+$loggedin = false;
+$input = "";
+if (isset($_COOKIE['jwt'])) {
+    $jwt = $_COOKIE['jwt'];
+    $payload = decodeJWT($jwt, $secret_key);
+    if ($payload && isset($payload['username'])) {
+        $loggedin = true;
+    }
+}
+
+// XSS
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && $loggedin && isset($_GET['input'])) {
+    $input = $_GET['input'];
+}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login and Protected Page</title>
+</head>
+<body>
+    <?php if (!$loggedin): ?>
+        <form method="POST" action="">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            <br>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <br>
+            <button type="submit" name="login">Login</button>
+        </form>
+        <?php if (isset($error)) echo "<p>$error</p>"; ?>
+    <?php else: ?>
+        <form method="POST" action="">
+            <button type="submit" name="logout">Logout</button>
+        </form>
+        <form method="GET" action="">
+            <label for="input">Enter something:</label>
+            <input type="text" id="input" name="input" required>
+            <button type="submit">Submit</button>
+        </form>
+        <?php if ($input) echo "You submitted: " . $input; ?>
+    <?php endif; ?>
+</body>
+</html>
