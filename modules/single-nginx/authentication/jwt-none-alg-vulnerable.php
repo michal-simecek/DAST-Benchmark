@@ -2,8 +2,7 @@
 session_start();
 
 $secret_key = "dastbenchmarksecretkey";
-$valid_username = 'admin';
-$valid_password = 'dastbenchmark';
+$admin_username = 'admin';
 
 function createJWT($header, $payload, $secret) {
     $header_encoded = base64UrlEncode(json_encode($header));
@@ -51,45 +50,26 @@ function base64UrlDecode($data) {
     return base64_decode(strtr($data, '-_', '+/'));
 }
 
-// login
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+// Generate JWT token for all visitors
+$header = ['alg' => 'HS256', 'typ' => 'JWT'];
+$payload = ['username' => 'guest', 'iat' => time(), 'exp' => time() + 3600];
 
-    if ($username === $valid_username && $password === $valid_password) {
-        
-        $header = ['alg' => 'HS256', 'typ' => 'JWT'];
-        $payload = ['username' => $username, 'iat' => time(), 'exp' => time() + 3600];
-
-        $jwt = createJWT($header, $payload, $secret_key);
-        setcookie("jwt", $jwt, time() + 3600, "/");
-        header("Location: jwt-none-alg-vulnerable.php");
-        exit();
-    } else {
-        $error = "Invalid username or password!";
-    }
-}
-
-// logout
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['logout'])) {
-    setcookie("jwt", "", time() - 3600, "/"); // Expire the JWT cookie
-    header("Location: jwt-none-alg-vulnerable.php");
-    exit();
-}
+$jwt = createJWT($header, $payload, $secret_key);
+setcookie("jwt", $jwt, time() + 3600, "/");
 
 // Check for JWT
 $loggedin = false;
-$input = "";
-if (isset($_COOKIE['jwt'])) {
-    $jwt = $_COOKIE['jwt'];
+$is_admin = false;
+
+if (isset($_COOKIE['jwt2'])) {
+    $jwt = $_COOKIE['jwt2'];
     $payload = decodeJWT($jwt, $secret_key);
     if ($payload && isset($payload['username'])) {
         $loggedin = true;
+        if ($payload['username'] === $admin_username) {
+            $is_admin = true;
+        }
     }
-}
-
-if ($_SERVER['REQUEST_METHOD'] === 'GET' && $loggedin && isset($_GET['input'])) {
-    $input = $_GET['input'];
 }
 ?>
 
@@ -97,30 +77,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && $loggedin && isset($_GET['input'])) 
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Login and Protected Page</title>
+    <title>Protected Page</title>
 </head>
 <body>
     <?php if (!$loggedin): ?>
-        <form method="POST" action="">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
-            <br>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-            <br>
-            <button type="submit" name="login">Login</button>
-        </form>
-        <?php if (isset($error)) echo "<p>$error</p>"; ?>
+        <p>You are not logged in.</p>
     <?php else: ?>
-        <form method="POST" action="">
-            <button type="submit" name="logout">Logout</button>
-        </form>
-        <form method="GET" action="">
-            <label for="input">Enter something:</label>
-            <input type="text" id="input" name="input" required>
-            <button type="submit">Submit</button>
-        </form>
-        <?php if ($input) echo "You submitted: " . htmlspecialchars($input); ?>
+        <?php if ($is_admin): ?>
+            <p>You are an admin!</p>
+        <?php else: ?>
+            <p>You are a guest!</p>
+        <?php endif; ?>
     <?php endif; ?>
 </body>
 </html>
