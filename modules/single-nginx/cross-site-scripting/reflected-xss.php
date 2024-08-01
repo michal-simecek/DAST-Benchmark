@@ -6,7 +6,7 @@
 </head>
 
 <body>
-<h2>Casual reflected xss</h2>
+<h2>casual reflected xss</h2>
 
 <form method="post">
   Name: <input type="text" name="name">
@@ -47,15 +47,6 @@
 </form>
 
 
-<h2 hidden>Hidden reflected xss</h2>
-
-<form hidden method="post">
-  Name: <input type="text" name="name">
-  <input type="hidden" name="action" value="hidden_xss">
-  <input type="submit">
-</form>
-
-
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $action = $_POST['action'];
@@ -65,9 +56,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             length_xss();
             break;
         case 'casual_xss':
-            casual_xss();
-            break;
-        case 'hidden_xss':
             casual_xss();
             break;
         case 'sanitized_xss':
@@ -122,7 +110,6 @@ echo "Hello, " . $name;
 }
 
 function sanitized_xss(){
-  // reflected in script tags for now, feel free to make it more creative :)
 $name = $_POST['name'];
 echo "<script>". htmlspecialchars($name, ENT_QUOTES, 'UTF-8') . "</script>";
 }
@@ -137,8 +124,7 @@ function blacklisted_xss(){
 }
 
 function blacklisted($string){
-  //easily bypassable by using capital cases
-  $blacklist = 'javascript|<script>|<svg>|onload|onerror|img|alert|ALERT';
+  $blacklist = 'javascript|script|svg|onload|onerror|img|alert|ALERT';
   if (preg_match ("/$blacklist/", $string))
   {return true;}
   else{return false;}
