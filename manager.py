@@ -21,7 +21,7 @@ client = docker.from_env() # Create a Docker client
 def update_docker_compose(docker_compose_path, path):
     endpoints = []
     new_volumes = [
-        "./index.html:/var/www/html/index.html"
+    #    "./index.html:/var/www/html/index.html"
     ]
     for extension in ['php', 'html']:
         for file_path in glob.glob(f"{path}/**/*.{extension}", recursive=True):
@@ -32,10 +32,10 @@ def update_docker_compose(docker_compose_path, path):
     with open(docker_compose_path, 'r') as file:
         docker_compose = yaml.safe_load(file)
 
-    docker_compose['services']['php-index']['volumes'] = new_volumes
+    docker_compose['services']['php-index']['volumes'] += new_volumes
     new_volumes = new_volumes[:] # creating new copy so previous list is not affected
-    new_volumes += ["./default.conf:/etc/nginx/conf.d/default.conf"]
-    docker_compose['services']['nginx-index']['volumes'] = new_volumes
+    #new_volumes += ["./default.conf:/etc/nginx/conf.d/default.conf"]
+    docker_compose['services']['nginx-index']['volumes'] += new_volumes
 
     with open(docker_compose_path, 'w') as file:
         yaml.safe_dump(docker_compose, file)
@@ -180,6 +180,8 @@ def main():
     group.add_argument('--stop', action='store_true', help='Stop all Docker containers')
     group.add_argument('--remove', action='store_true', help='Remove all Docker containers')
     group.add_argument('--restart', action='store_true', help='Remove all Docker containers and recreate them')
+    group.add_argument('--count-requests', action='store_true', help='Count number of requests made to primary container since last reset or restart')
+    group.add_argument('--reset-counter', action='store_true', help='Reset the number of requests made')
 
     args = parser.parse_args()
 
@@ -193,6 +195,10 @@ def main():
         stop_containers()
         remove_containers()
         start_containers()
+    elif args.count_requests:
+        os.system("docker exec -it index-nginx-index-1 sh -c 'cat /var/log/nginx/access.log | wc -l'")
+    elif args.reset_counter:
+        os.system("docker exec -it index-nginx-index-1 sh -c 'echo > /var/log/nginx/access.log'")
     else:
         print("No valid action provided.")
         sys.exit(1)

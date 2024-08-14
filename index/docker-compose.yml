@@ -8,6 +8,8 @@ services:
     volumes:
     - ./index.html:/var/www/html/index.html
     - ./default.conf:/etc/nginx/conf.d/default.conf
+    - ./entrypoint.sh:/entrypoint.sh
+    entrypoint: /entrypoint.sh
   php-{name}:
     image: php:fpm
     volumes:
