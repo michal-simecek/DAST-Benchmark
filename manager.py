@@ -198,7 +198,7 @@ def main():
     elif args.count_requests:
         os.system("docker exec -it index-nginx-index-1 sh -c 'cat /var/log/nginx/access.log | wc -l'")
     elif args.reset_counter:
-        os.system("docker exec -it index-nginx-index-1 sh -c 'echo > /var/log/nginx/access.log'")
+        os.system("docker exec -it index-nginx-index-1 sh -c 'truncate -s 0 /var/log/nginx/access.log'")
     else:
         print("No valid action provided.")
         sys.exit(1)
