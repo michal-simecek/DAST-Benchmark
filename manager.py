@@ -213,7 +213,7 @@ def main():
 
         time_difference = (last_time - first_time).total_seconds()
 
-        print(f"Time difference between first and last request: {time_difference} seconds")
+        print(f"{time_difference} seconds")
     else:
         print("No valid action provided.")
         sys.exit(1)
