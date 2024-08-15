@@ -7,6 +7,7 @@ import netifaces as ni
 import argparse
 import yaml
 from docker.errors import NotFound
+from datetime import datetime
 
 try:
     from netifaces import AF_INET, ifaddresses
@@ -181,7 +182,8 @@ def main():
     group.add_argument('--remove', action='store_true', help='Remove all Docker containers')
     group.add_argument('--restart', action='store_true', help='Remove all Docker containers and recreate them')
     group.add_argument('--count-requests', action='store_true', help='Count number of requests made to primary container since last reset or restart')
-    group.add_argument('--reset-counter', action='store_true', help='Reset the number of requests made')
+    group.add_argument('--reset-stats', action='store_true', help='Reset the number of requests made')
+    group.add_argument('--get-time', action='store_true', help='Reset the number of requests made')
 
     args = parser.parse_args()
 
@@ -197,8 +199,21 @@ def main():
         start_containers()
     elif args.count_requests:
         os.system("docker exec -it index-nginx-index-1 sh -c 'cat /var/log/nginx/access.log | wc -l'")
-    elif args.reset_counter:
+    elif args.reset_stats:
         os.system("docker exec -it index-nginx-index-1 sh -c 'truncate -s 0 /var/log/nginx/access.log'")
+    elif args.get_time:
+        command = r"""docker exec -it index-nginx-index-1 sh -c "awk -F'[][]' '{print \$2}' /var/log/nginx/access.log" """
+        result = subprocess.check_output(command, shell=True).decode('utf-8').strip().split('\n')
+        
+        first_timestamp = result[0].strip()
+        last_timestamp = result[-1].strip()
+
+        first_time = datetime.strptime(first_timestamp, '%d/%b/%Y:%H:%M:%S %z')
+        last_time = datetime.strptime(last_timestamp, '%d/%b/%Y:%H:%M:%S %z')
+
+        time_difference = (last_time - first_time).total_seconds()
+
+        print(f"Time difference between first and last request: {time_difference} seconds")
     else:
         print("No valid action provided.")
         sys.exit(1)
