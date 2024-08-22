@@ -149,6 +149,7 @@ def generate_router(index_endpoint_list):
     containers = client.containers.list() # List running containers
     html = "<html><body>\n"
     ip = select_interface_return_IP(get_interfaces())
+    print('http://127.0.0.1:80/')
     for container in containers: 
         port_data = container.attrs['NetworkSettings']['Ports'] # Get the port mappings
         for exposed_port, port_info in port_data.items():
@@ -159,9 +160,11 @@ def generate_router(index_endpoint_list):
                         html += f"<p><a href='http://{ip}/{index_endpoint}'>nginx-index/{index_endpoint}</a></p>\n"
                     continue
                 if exposed_port == "80/tcp":
-                    html += f"<p><a href='http://{ip}:{host_port}'>{container.name}:{host_port}</a></p>\n" # Add a link to the HTML file for each exposed http port
+                    print(f'http://{ip}:{host_port}/')
+                    # html += f"<p><a href='http://{ip}:{host_port}'>{container.name}:{host_port}</a></p>\n" # Add a link to the HTML file for each exposed http port
                 if exposed_port == "443/tcp":
-                    html += f"<p><a href='https://{ip}:{host_port}'>{container.name}:{host_port}</a></p>\n" # Add a link to the HTML file for each exposed https port
+                    print(f'https://{ip}:{host_port}/')
+                    # html += f"<p><a href='https://{ip}:{host_port}'>{container.name}:{host_port}</a></p>\n" # Add a link to the HTML file for each exposed https port
     html += "</body></html>\n"
 
     with open("tmp/index/index.html", "w") as file: # Write the HTML file
