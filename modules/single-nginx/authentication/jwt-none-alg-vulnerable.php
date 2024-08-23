@@ -61,8 +61,8 @@ setcookie("jwt", $jwt, time() + 3600, "/");
 $loggedin = false;
 $is_admin = false;
 
-if (isset($_COOKIE['jwt2'])) {
-    $jwt = $_COOKIE['jwt2'];
+if (isset($_COOKIE['jwt'])) {
+    $jwt = $_COOKIE['jwt'];
     $payload = decodeJWT($jwt, $secret_key);
     if ($payload && isset($payload['username'])) {
         $loggedin = true;
