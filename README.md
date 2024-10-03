@@ -1,4 +1,4 @@
-# Ultimate DAST benchmark 9000
+# DAST benchmark
  
 ## Getting started
 
