@@ -16,14 +16,12 @@ except ModuleNotFoundError as e:
                      f"and try again.")
 
 # DOCKER CLIENT INIT ---------------------------------------------------------------------------------------------
-client = docker.from_env() # Create a Docker client
+client = docker.from_env()
 
 # DOCKER PART ----------------------------------------------------------------------------------------------------
 def update_docker_compose(docker_compose_path, path):
     endpoints = []
-    new_volumes = [
-    #    "./index.html:/var/www/html/index.html"
-    ]
+    new_volumes = []
     for extension in ['php', 'html']:
         for file_path in glob.glob(f"{path}/**/*.{extension}", recursive=True):
             new_volumes += ["../." + file_path + ":/var/www/html/" + '-'.join(file_path.split('/')[4:])]
@@ -34,8 +32,7 @@ def update_docker_compose(docker_compose_path, path):
         docker_compose = yaml.safe_load(file)
 
     docker_compose['services']['php-index']['volumes'] += new_volumes
-    new_volumes = new_volumes[:] # creating new copy so previous list is not affected
-    #new_volumes += ["./default.conf:/etc/nginx/conf.d/default.conf"]
+    new_volumes = new_volumes[:]
     docker_compose['services']['nginx-index']['volumes'] += new_volumes
 
     with open(docker_compose_path, 'w') as file:
@@ -76,7 +73,7 @@ def replace_placeholders_in_directory(directory, start_port=8000, port_placehold
         start_port = replace_placeholders_in_file(file_path, start_port, port_placeholder, name_placeholder)
 
 def prepare_docker_composes():
-    # Copy modules into temporary directoty
+    # Copy modules into temporary directory
     os.system('[ -d "./tmp" ] && rm -rf ./tmp')
     os.system('cp -r ./modules ./tmp')
     os.system('cp -r ./index ./tmp')
