@@ -71,6 +71,13 @@ if (isset($_COOKIE['jwt'])) {
     $jwt = createJWT($header, $payload, $secret_key);
     setcookie("jwt", $jwt, time() + 3600, "/");
 }
+
+$message = '';
+if ($loggedin) {
+    $message = $is_admin ? "You are an admin!" : "You are a guest!";
+} else {
+    $message = "You are not logged in.";
+}
 ?>
 
 <!DOCTYPE html>
@@ -78,30 +85,13 @@ if (isset($_COOKIE['jwt'])) {
 <head>
     <meta charset="UTF-8">
     <title>Protected Page</title>
-    <script>
-        function displayMessage(message) {
-            document.getElementById('message').innerText = message;
-        }
-    </script>
 </head>
 <body>
-    <button onclick="authenticate()">Authenticate</button>
-    <p id="message"></p>
-
-    <script>
-        function authenticate() {
-            <?php 
-                if (!$loggedin) {
-                    $message = "You are not logged in.";
-                } else if ($is_admin) {
-                    $message = "You are an admin!";
-                } else {
-                    $message = "You are a guest!";
-                }
-            ?>
-            const message = "<?php echo $message; ?>";
-            displayMessage(message);
-        }
-    </script>
+    <form method="POST" id="authForm">
+        <button type="submit" name="authenticate">Authenticate</button>
+    </form>
+    <p id="message">
+        <?php if(isset{$_POST['authenticate']}) (echo htmlspecialchars($message);} ?>
+    </p>
 </body>
 </html>
