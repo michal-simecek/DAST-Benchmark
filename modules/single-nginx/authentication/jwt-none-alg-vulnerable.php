@@ -91,7 +91,7 @@ if ($loggedin) {
         <button type="submit" name="authenticate">Authenticate</button>
     </form>
     <p id="message">
-        <?php if(isset{$_POST['authenticate']}) (echo htmlspecialchars($message);} ?>
+        <?php if(isset($_POST['authenticate'])) {echo htmlspecialchars($message);} ?>
     </p>
 </body>
 </html>
