@@ -50,12 +50,6 @@ function base64UrlDecode($data) {
     return base64_decode(strtr($data, '-_', '+/'));
 }
 
-// Generate JWT token for all visitors
-$header = ['alg' => 'HS256', 'typ' => 'JWT'];
-$payload = ['username' => 'guest', 'iat' => time(), 'exp' => time() + 3600];
-
-$jwt = createJWT($header, $payload, $secret_key);
-setcookie("jwt", $jwt, time() + 3600, "/");
 
 // Check for JWT
 $loggedin = false;
@@ -70,6 +64,12 @@ if (isset($_COOKIE['jwt'])) {
             $is_admin = true;
         }
     }
+} else {
+    // Generate JWT token for all visitors
+    $header = ['alg' => 'HS256', 'typ' => 'JWT'];
+    $payload = ['username' => 'guest', 'iat' => time(), 'exp' => time() + 3600];
+    $jwt = createJWT($header, $payload, $secret_key);
+    setcookie("jwt", $jwt, time() + 3600, "/");
 }
 ?>
 
@@ -78,16 +78,30 @@ if (isset($_COOKIE['jwt'])) {
 <head>
     <meta charset="UTF-8">
     <title>Protected Page</title>
+    <script>
+        function displayMessage(message) {
+            document.getElementById('message').innerText = message;
+        }
+    </script>
 </head>
 <body>
-    <?php if (!$loggedin): ?>
-        <p>You are not logged in.</p>
-    <?php else: ?>
-        <?php if ($is_admin): ?>
-            <p>You are an admin!</p>
-        <?php else: ?>
-            <p>You are a guest!</p>
-        <?php endif; ?>
-    <?php endif; ?>
+    <button onclick="authenticate()">Authenticate</button>
+    <p id="message"></p>
+
+    <script>
+        function authenticate() {
+            <?php 
+                if (!$loggedin) {
+                    $message = "You are not logged in.";
+                } else if ($is_admin) {
+                    $message = "You are an admin!";
+                } else {
+                    $message = "You are a guest!";
+                }
+            ?>
+            const message = "<?php echo $message; ?>";
+            displayMessage(message);
+        }
+    </script>
 </body>
 </html>
