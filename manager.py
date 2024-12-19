@@ -146,6 +146,7 @@ def generate_router(index_endpoint_list):
     containers = client.containers.list() # List running containers
     html = "<html><body>\n"
     ip = select_interface_return_IP(get_interfaces())
+    ip = "44.222.205.143"
     print(f'http://{ip}/')
     for container in containers: 
         port_data = container.attrs['NetworkSettings']['Ports'] # Get the port mappings
@@ -183,7 +184,7 @@ def main():
     group.add_argument('--restart', action='store_true', help='Remove all Docker containers and recreate them')
     group.add_argument('--count-requests', action='store_true', help='Count number of requests made to primary container since last reset or restart')
     group.add_argument('--reset-stats', action='store_true', help='Reset the number of requests made')
-    group.add_argument('--get-time', action='store_true', help='Reset the number of requests made')
+    group.add_argument('--get-time', action='store_true', help='Calculate time between the first and last request')
 
     args = parser.parse_args()
 
