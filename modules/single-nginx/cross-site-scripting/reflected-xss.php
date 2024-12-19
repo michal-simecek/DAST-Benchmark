@@ -9,7 +9,7 @@
 <h2>casual reflected xss</h2>
 
 <form method="post">
-  Name: <input type="text" name="name">
+  Name: <input type="text" name="casual_xss">
   <input type="hidden" name="action" value="casual_xss">
   <input type="submit">
 </form>
@@ -17,7 +17,7 @@
 <h2>lenght limited reflected xss</h2>
 
 <form method="post">
-  Name (max 20 characters): <input type="text" name="name" maxlenght="15">
+  Name (max 20 characters): <input type="text" name="length_xss" maxlenght="15">
   <input type="hidden" name="action" value="length_xss">
   <input type="submit">
 </form>
@@ -25,7 +25,7 @@
 <h2>sanitized xss reflected in script tags</h2>
 
 <form method="post">
-  Name: <input type="text" name="name">
+  Name: <input type="text" name="sanitized_xss">
   <input type="hidden" name="action" value="sanitized_xss">
   <input type="submit">
 </form>
@@ -33,7 +33,7 @@
 <h2>reflected xss in email field</h2>
 
 <form method="post">
-  Email: <input type="text" name="email">
+  Email: <input type="text" name="email_xss">
   <input type="hidden" name="action" value="email_xss">
   <input type="submit">
 </form>
@@ -41,7 +41,7 @@
 <h2>reflected xss with blacklisted words</h2>
 
 <form method="post">
-  Name: <input type="text" name="name">
+  Name: <input type="text" name="blacklisted_xss">
   <input type="hidden" name="action" value="blacklisted_xss">
   <input type="submit">
 </form>
@@ -75,7 +75,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 function length_xss(){
   // example payload: <svg/onload=alert()>
-  $name = $_POST['name'];
+  $name = $_POST['length_xss'];
   if(strlen($name) <= 20){
     echo "Hello, " . $name;
   }
@@ -87,7 +87,7 @@ function length_xss(){
 function email_xss(){
   // example payload: "<script>alert(1)</script>"@example.com
   // , FILTER_VALIDATE_EMAIL
-  $email = $_POST['email'];
+  $email = $_POST['email_xss'];
   if(isEmail($email)){
     echo "your email is " . $email;
   }
@@ -105,17 +105,17 @@ function isEmail($email) {
 }
 
 function casual_xss(){
-$name = $_POST['name'];
+$name = $_POST['casual_xss'];
 echo "Hello, " . $name;
 }
 
 function sanitized_xss(){
-$name = $_POST['name'];
+$name = $_POST['sanitized_xss'];
 echo "<script>". htmlspecialchars($name, ENT_QUOTES, 'UTF-8') . "</script>";
 }
 
 function blacklisted_xss(){
-  $name = $_POST['name'];
+  $name = $_POST['blacklisted_xss'];
   if(!blacklisted($name)){
     echo "Hello, " . $name;
   }else{
