@@ -114,7 +114,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                 <p><strong>Birthdate:</strong> $birthdate</p>
                 <p><strong>Email Address:</strong> $email</p>
                 <p><strong>Invoice ID:</strong> $invoice_ID</p>
-                <p><strong>Email Address:</strong> $iban</p>";
+                <p><strong>IBAN:</strong> $iban</p>";
 } else {
     $content = "No valid ID provided. Please specify an ID in the URL, like ?id=1";
 }
