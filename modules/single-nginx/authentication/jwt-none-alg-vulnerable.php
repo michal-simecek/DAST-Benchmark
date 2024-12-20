@@ -69,7 +69,7 @@ if (isset($_COOKIE['jwt'])) {
     $header = ['alg' => 'HS256', 'typ' => 'JWT'];
     $payload = ['username' => 'guest', 'iat' => time(), 'exp' => time() + 3600];
     $jwt = createJWT($header, $payload, $secret_key);
-    setcookie("jwt", $jwt, time() + 3600, "/");
+    setcookie("jwt", $jwt, time() + 3600, parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
 }
 
 $message = '';
