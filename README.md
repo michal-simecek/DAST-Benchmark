@@ -40,11 +40,6 @@ python3 manager.py <command>
 
 The URL of the index page containing all paths will be output to the console.
 
-## How It Works
-1. **Setup**: Deploys a test environment using Docker containers simulating real-world web applications with predefined vulnerabilities.
-2. **Scanners**: Supports integration with popular DAST tools like Burp Suite, ZAP, Nessus, WebInspect, and AppScan.
-3. **Benchmarking**: Runs tests, collects results, and compares tool performance based on predefined metrics.
-
 ## Contributions
 Contributions to add new features, vulnerabilities, or support for additional tools are welcome. Please submit a pull request or open an issue for discussion.
 
